@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packing List</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"
+    rel="stylesheet"
+  />
+    <link rel="stylesheet" href="./styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl mb-4">Packing List</h1>
+        <div class="mb-4">
+            <button onclick="createItemPrompt()" class="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600">Create Item</button>
+            <button onclick="loadPackingList()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Load List</button>
+            <button onclick="anotherAction()" class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">Another Action</button> <!-- New button -->
+        </div>
+<div class="flex items-center justify-center">
+    <table class="w-full table-auto border border-gray-300 shadow-md">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="px-4 py-2 cursor-pointer" onclick="sortTable(0)">
+            Item Type <i class="ml-2 fas fa-sort text-gray-500" id="icon0"></i>
+          </th>
+          <th class="px-4 py-2 cursor-pointer" onclick="sortTable(1)">
+            Item Name <i class="ml-2 fas fa-sort text-gray-500" id="icon1"></i>
+          </th>
+          <th class="px-4 py-2 cursor-pointer" onclick="sortTable(2)">
+            Quantity <i class="ml-2 fas fa-sort text-gray-500" id="icon2"></i>
+          </th>
+          <th class="px-4 py-2 cursor-pointer" onclick="sortTable(3)">
+            Colors <i class="ml-2 fas fa-sort text-gray-500" id="icon3"></i>
+          </th>
+          <th class="px-4 py-2 cursor-pointer" onclick="sortTable(4)">
+            Importance <i class="ml-2 fas fa-sort text-gray-500" id="icon4"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="itemTypes">
+        <!-- Table rows go here -->
+      </tbody>
+    </table>
+  </div>
+
+    </div>
+ <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/js/all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    let sortedColumn = null;
+    let ascendingOrder = true;
+
+    function sortTable(columnIndex) {
+      const tbody = document.getElementById('itemTypes');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      rows.sort((a, b) => {
+        const aValue = a.cells[columnIndex].textContent.trim();
+        const bValue = b.cells[columnIndex].textContent.trim();
+
+        if (columnIndex === 2) {
+          // Convert Quantity to numeric value for correct sorting
+          return ascendingOrder
+            ? Number(aValue) - Number(bValue)
+            : Number(bValue) - Number(aValue);
+        } else {
+          return ascendingOrder ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+        }
+      });
+
+      // Change arrow icons based on sorting order
+      updateArrowIcons(columnIndex);
+
+      // Update the table with sorted rows
+      rows.forEach((row) => tbody.appendChild(row));
+
+      // Toggle sorting order for the next click
+      ascendingOrder = !ascendingOrder;
+    }
+
+    function updateArrowIcons(columnIndex) {
+      if (sortedColumn !== null && sortedColumn !== columnIndex) {
+        const previousIcon = document.getElementById('icon' + sortedColumn);
+        previousIcon.classList.remove(ascendingOrder ? 'fa-sort-up' : 'fa-sort-down');
+        previousIcon.classList.add('fa-sort');
+      }
+
+      const currentIcon = document.getElementById('icon' + columnIndex);
+      currentIcon.classList.remove('fa-sort');
+      currentIcon.classList.add(ascendingOrder ? 'fa-sort-up' : 'fa-sort-down');
+
+      sortedColumn = columnIndex;
+    }
+  </script>
+    <script src="./script.js"></script>
+</body>
+</html>
