@@ -5,14 +5,16 @@
       "item_name": "shirts",
       "quantity": 10,
       "colors": ["white", "blue"],
-      "importance": 4
+      "importance": 4,
+      "complete": "true"
     },
     {
       "item_type": "personal",
       "item_name": "pants",
       "quantity": 5,
       "colors": ["black", "khaki"],
-      "importance": 3
+      "importance": 3,
+      "complete": "true"
     }
   ],
   "household_items": [
@@ -21,14 +23,16 @@
       "item_name": "pots",
       "quantity": 3,
       "colors": ["silver"],
-      "importance": 4
+      "importance": 4,
+      "complete": "false"
     },
     {
       "item_type": "household",
       "item_name": "pans",
       "quantity": 4,
       "colors": ["black"],
-      "importance": 3
+      "importance": 3,
+      "complete": "false"
     }
   ],
   "work_essentials": [
@@ -37,14 +41,16 @@
       "item_name": "notebooks",
       "quantity": 3,
       "colors": ["assorted"],
-      "importance": 4
+      "importance": 4,
+      "complete": "true"
     },
     {
       "item_type": "work",
       "item_name": "pens",
       "quantity": 10,
       "colors": ["blue", "black"],
-      "importance": 3
+      "importance": 3,
+      "complete": "true"
     }
   ]
 }

@@ -7,6 +7,7 @@ function createItemPrompt() {
   const quantity = prompt("Enter quantity:");
   const colors = prompt("Enter colors:");
   const importance = prompt("Enter importance:");
+  const complete = prompt("Complete yet?: (true/false)");
 
   // Call the API endpoint to create the item
   fetch('/create', {
@@ -19,7 +20,8 @@ function createItemPrompt() {
           item_name: itemName,
           quantity: quantity,
           colors: colors,
-          importance: importance
+          importance: importance,
+          complete: complete
       })
   })
   .then(response => response.json())
@@ -52,12 +54,20 @@ function loadPackingList() {
       data[category].forEach(item => {
         // Create a new row for each item and add to the itemTypes row
         const itemRow = document.createElement('tr');
+        // Create a class variable based on completeness
+        const completenessClass = item.complete ? 'bg-blue-500' : 'bg-purple-300';
+        // Add classes to the itemRow element
+        itemRow.classList.add('py-2', 'px-4', 'rounded', completenessClass);
         itemRow.innerHTML = `
-          <td>${item.item_type}</td>
-          <td>${item.item_name}</td>
-          <td>${item.quantity}</td>
-          <td>${item.colors}</td>
-          <td>${item.importance}</td>
+          <td class="text-center">${item.item_type}</td>
+          <td class="text-center">${item.item_name}</td>
+          <td class="text-center">${item.quantity}</td>
+          <td class="text-center">${item.colors}</td>
+          <td class="text-center">${item.importance}</td>
+          <td class="text-center">
+
+          ${item.complete ? 'Yes' : 'No'}
+          </td>
         `;
         itemTypesRow.appendChild(itemRow);
       });

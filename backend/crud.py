@@ -16,7 +16,7 @@ def connect_to_db():
 
 
 def read_json_file():
-    with open('./data.json', 'r') as file:
+    with open('data.json', 'r') as file:
         data = json.load(file)
     return data
 
@@ -42,14 +42,14 @@ def execute_query(connection, query, values=None):
 
 
 # create_item function
-def create_item(item_type, item_name, quantity, colors, importance):
+def create_item(item_type, item_name, quantity, colors, importance, complete):
     table_name = get_table_name(item_type)
     if table_name is None:
         print("Invalid item_type provided. Must be 'personal', 'household', or 'work'.")
         return
 
-    query = f"INSERT INTO {table_name} (type, item_name, quantity, colors, importance) VALUES (%s, %s, %s, %s, %s)"
-    values = (item_type, item_name, quantity, colors, importance)
+    query = f"INSERT INTO {table_name} (type, item_name, quantity, colors, importance, complete) VALUES (%s, %s, %s, %s, %s, %s)"
+    values = (item_type, item_name, quantity, colors, importance, complete)
 
     connection = connect_to_db()
     execute_query(connection, query, values)
@@ -80,7 +80,8 @@ def read_item(item_type, item_name):
             'item_name': row[2],
             'quantity': row[3],
             'colors': row[4],
-            'importance': row[5]
+            'importance': row[5],
+            'complete': row[6]
         })
 
     cursor.close()
@@ -89,7 +90,7 @@ def read_item(item_type, item_name):
     return result, json_result
 
 
-def update_data(item_type, item_name, quantity=None, colors=None, importance=None):
+def update_data(item_type, item_name, quantity=None, colors=None, importance=None, complete=None):
     table_name = get_table_name(item_type)
     if table_name is None:
         print("Invalid item_type provided. Must be 'personal', 'household', or 'work'.")
@@ -106,6 +107,9 @@ def update_data(item_type, item_name, quantity=None, colors=None, importance=Non
     if importance is not None:
         update_parts.append("importance = %s")
         values.append(importance)
+    if complete is not None:
+        update_parts.append("complete = %s")
+        values.append(complete)
 
     values.append(item_name)
     update_query = f"UPDATE {table_name} SET {', '.join(update_parts)} WHERE item_name = %s"
@@ -151,7 +155,8 @@ def list_all_items():
                 'item_name': row[2],  # Assuming item_name is in the third column
                 'quantity': row[3],   # Assuming quantity is in the fourth column
                 'colors': row[4],     # Assuming colors is in the fifth column
-                'importance': row[5]  # Assuming importance is in the sixth column
+                'importance': row[5],  # Assuming importance is in the sixth column
+                'complete': row[6]    # Assuming complete is in the seventh column
             }
             items[table].append(item)
 

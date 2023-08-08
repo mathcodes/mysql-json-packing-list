@@ -18,7 +18,7 @@ def serve_file(path):
 @app.route('/create', methods=['POST'])
 def create_item():
     data = request.json
-    crud.create_item(data['item_type'], data['item_name'], data['quantity'], data['colors'], data['importance'])
+    crud.create_item(data['item_type'], data['item_name'], data['quantity'], data['colors'], data['importance'], data['complete'])
     updated_items = crud.list_all_items()
     return jsonify(success=True, items=updated_items)
 
@@ -32,16 +32,16 @@ def list_items():
 
 
 def initialize_database():
-    db = mysql.connector.connect(host="localhost", user="root", passwd="", db="PackingWithJSON")
+    db = mysql.connector.connect(host="localhost", user="root", passwd="")
     cursor = db.cursor()
 
     cursor.execute("CREATE DATABASE IF NOT EXISTS PackingWithJSON")
     cursor.execute("USE PackingWithJSON")
 
     tables = [
-        "CREATE TABLE IF NOT EXISTS personal_items (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(255), item_name VARCHAR(255), quantity INT, colors VARCHAR(255), importance INT)",
-        "CREATE TABLE IF NOT EXISTS household_items (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(255), item_name VARCHAR(255), quantity INT, colors VARCHAR(255), importance INT)",
-        "CREATE TABLE IF NOT EXISTS work_essentials (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(255), item_name VARCHAR(255), quantity INT, colors VARCHAR(255), importance INT)"
+        "CREATE TABLE IF NOT EXISTS personal_items (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(255), item_name VARCHAR(255), quantity INT, colors VARCHAR(255), importance INT, complete BOOLEAN)",
+        "CREATE TABLE IF NOT EXISTS household_items (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(255), item_name VARCHAR(255), quantity INT, colors VARCHAR(255), importance INT, complete BOOLEAN)",
+        "CREATE TABLE IF NOT EXISTS work_essentials (id INT AUTO_INCREMENT PRIMARY KEY, type VARCHAR(255), item_name VARCHAR(255), quantity INT, colors VARCHAR(255), importance INT, complete BOOLEAN)"
     ]
 
     for table_query in tables:
@@ -53,16 +53,16 @@ def initialize_database():
 
 
 
-def create_item(item_type, item_name, quantity, colors, importance):
-    crud.create_item(item_type, item_name, quantity, colors, importance)
+def create_item(item_type, item_name, quantity, colors, importance, complete):
+    crud.create_item(item_type, item_name, quantity, colors, importance, complete)
 
 
 def read_json_file():
     return crud.read_json_file()
 
 
-def update_data(item_type, item_name, quantity=None, colors=None, importance=None):
-    crud.update_data(item_type, item_name, quantity, colors, importance)
+def update_data(item_type, item_name, quantity=None, colors=None, importance=None, complete=None):
+    crud.update_data(item_type, item_name, quantity, colors, importance, complete)
 
 
 def read_item(item_type, item_name):
@@ -77,11 +77,11 @@ if __name__ == "__main__":
     initialize_database()
     # CRUD Operations
     # Create item example
-    create_item("personal", "laptop", 1, "grey", 3)
+    create_item("personal", "laptop", 1, "grey", 3, True)
     # Read JSON file example
     data = read_json_file()
     # Update data example
-    update_data("personal", "laptop", quantity=2, colors="silver", importance=4)
+    update_data("personal", "laptop", quantity=2, colors="silver", importance=4, complete=True)
     # Read item example
     result, json_result = read_item("personal", "laptop")
     # Delete item example
