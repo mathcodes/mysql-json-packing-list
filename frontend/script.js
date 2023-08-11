@@ -78,3 +78,4 @@ function loadPackingList() {
     console.error("Error loading packing list:", error);
   });
 }
+

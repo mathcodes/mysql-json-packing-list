@@ -51,5 +51,3 @@ Contributions are welcome! Feel free to fork this repository and submit pull req
 This project is licensed under the [MIT License](LICENSE.md).
 
 ---
-
-*Icons and badges created using [Shields.io](https://shields.io/).*

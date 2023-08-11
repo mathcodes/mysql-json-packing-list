@@ -49,7 +49,7 @@
       "item_name": "pens",
       "quantity": 10,
       "colors": ["blue", "black"],
-      "importance": 3,
+      "editor.quickSuggestions": 3,
       "complete": "true"
     }
   ]
